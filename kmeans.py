@@ -45,7 +45,10 @@ def Kmeans(dataSet,k):
 	centroid = randCent(dataSet,k)   # initialization of centroid, with values in random
 	clusterchange = True
 	# begin to loop
-	while clusterchange:
+	m = 0
+	while (clusterchange):
+	
+		print("m ====== %d" %m)
 		clusterchange = False
 		for i in range(data_quantity):
 			cluster_num = 0
@@ -60,9 +63,14 @@ def Kmeans(dataSet,k):
 					ClusterAssment[i,:] = cluster_num, Min_Distance
 	# update the centroid
 	
-	for cent in range(k):
-		temp = dataSet[np.nonzeros(ClusterAssment[:,0] == cent)[0]]
-		centroid[cent,:] = np.means(temp,axis = 0)
+		for cent in range(k):
+			print(cent)
+			temp = dataSet[np.nonzero(ClusterAssment[:,0] == cent)[0]]
+			temp = np.matrix(temp)
+			if len(temp) == 0:
+				temp = [0,0]
+			centroid[cent,:] = temp.mean(0)
+		m = m+1
 	return centroid, ClusterAssment
 		
 
@@ -70,6 +78,7 @@ def Kmeans(dataSet,k):
 if __name__ == '__main__':
 	dataSet = LoadData('testSet.txt')
 	centroid,ClusterAssment = Kmeans(dataSet,10)
+	#Kmeans(dataSet,10)
 	print (centroid)
 
 
